@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route, useParams } from "react-router-dom";
 import InsuranceScene from "./InsuranceScene.jsx";
+import Navbar from "./components/Navbar.jsx";
 
 function InsuranceDetail() {
     const { entity, type } = useParams();
@@ -15,9 +16,12 @@ function InsuranceDetail() {
 
 export default function App() {
     return (
-        <Routes>
-            <Route path="/" element={<InsuranceScene />} />
-            <Route path="/insurance/:entity/:type" element={<InsuranceDetail />} />
-        </Routes>
+        <>
+            <Navbar />
+            <Routes>
+                <Route path="/" element={<InsuranceScene />} />
+                <Route path="/insurance/:entity/:type" element={<InsuranceDetail />} />
+            </Routes>
+        </>
     );
 }
