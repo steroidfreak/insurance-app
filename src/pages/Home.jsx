@@ -1,12 +1,10 @@
-import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
-import InsuranceScene from "../components/InsuranceScene.jsx";
+import InsuranceScene from "../InsuranceScene.jsx";
 import { Link } from "react-router-dom";
 
 export default function Home() {
     return (
         <div className="min-h-screen bg-gradient-to-b from-white to-slate-50">
-            <Navbar />
 
             {/* HERO */}
             <section className="pt-28">
@@ -38,11 +36,11 @@ export default function Home() {
                     </div>
 
                     {/* Interactive scene */}
-                    <div className="flex justify-center">
-                        <div className="rounded-xl2 bg-white shadow-card p-6">
-                            <InsuranceScene />
+                        <div className="flex justify-center">
+                            <div className="rounded-xl2 bg-white shadow-card p-6">
+                                <InsuranceScene />
+                            </div>
                         </div>
-                    </div>
                 </div>
             </section>
 
