@@ -28,21 +28,20 @@ export default function InsuranceScene() {
         children: { bottom: 0, centerX: true },
     };
 
-    const BubbleRow = ({ entity, anchor }) => {
+    const BubbleRow = ({ entity, size = avatarSize }) => {
         const items = BUBBLES[entity] ?? [];
         const style = {
             position: "absolute",
             zIndex: 30,
             display: "flex",
             gap: 12,
-            bottom: (anchor.bottom ?? 0) + avatarSize + 10,
-            ...(anchor.left != null ? { left: anchor.left } : {}),
-            ...(anchor.right != null ? { right: anchor.right } : {}),
-            ...(anchor.centerX ? { left: "50%", transform: "translateX(-50%)" } : {}),
+            bottom: size + 10,
+            left: "50%",
+            transform: "translateX(-50%)",
         };
         return (
             <AnimatePresence>
-                <div style={style} onClick={(e) => e.stopPropagation()}>
+                <div style={style} onMouseEnter={() => setSelected(entity)}>
                     {items.map((b, i) => (
                         <motion.button
                             key={b.type}
@@ -65,12 +64,12 @@ export default function InsuranceScene() {
     };
 
     return (
-        <div className="relative w-full flex justify-center items-center">
+        <div
+            className="relative w-full flex justify-center items-center"
+            onMouseLeave={() => setSelected(null)}
+        >
             <motion.div
-                onClick={(e) => {
-                    e.stopPropagation();
-                    setSelected(selected === "house" ? null : "house");
-                }}
+                onMouseEnter={() => setSelected("house")}
                 whileHover={{ scale: 1.02 }}
                 className="relative cursor-pointer"
                 style={{ width: houseSize, height: houseSize }}
@@ -78,41 +77,62 @@ export default function InsuranceScene() {
                 <img src="/house.png" alt="House" className="w-full h-full object-contain" />
 
                 {/* Owner */}
-                <motion.div
-                    onClick={(e) => { e.stopPropagation(); setSelected(selected === "owner" ? null : "owner"); }}
-                    whileHover={{ scale: 1.05 }}
-                    className="absolute bg-white rounded-full shadow-card cursor-pointer"
-                    style={{ bottom: anchors.owner.bottom, left: anchors.owner.left, width: avatarSize, height: avatarSize, zIndex: 20 }}
+                <div
+                    onMouseEnter={() => setSelected("owner")}
+                    onMouseLeave={() => setSelected(null)}
+                    className="absolute"
+                    style={{ bottom: anchors.owner.bottom, left: anchors.owner.left, zIndex: 20 }}
                 >
-                    <img src="/owner.png" alt="Owner" className="w-full h-full object-cover rounded-full" />
-                </motion.div>
-                {selected === "owner" && <BubbleRow entity="owner" anchor={anchors.owner} />}
+                    <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        className="bg-white rounded-full shadow-card cursor-pointer"
+                        style={{ width: avatarSize, height: avatarSize }}
+                    >
+                        <img src="/owner.png" alt="Owner" className="w-full h-full object-cover rounded-full" />
+                    </motion.div>
+                    {selected === "owner" && <BubbleRow entity="owner" />}
+                </div>
 
                 {/* Wife */}
-                <motion.div
-                    onClick={(e) => { e.stopPropagation(); setSelected(selected === "wife" ? null : "wife"); }}
-                    whileHover={{ scale: 1.05 }}
-                    className="absolute bg-white rounded-full shadow-card cursor-pointer"
-                    style={{ bottom: anchors.wife.bottom, right: anchors.wife.right, width: avatarSize, height: avatarSize, zIndex: 20 }}
+                <div
+                    onMouseEnter={() => setSelected("wife")}
+                    onMouseLeave={() => setSelected(null)}
+                    className="absolute"
+                    style={{ bottom: anchors.wife.bottom, right: anchors.wife.right, zIndex: 20 }}
                 >
-                    <img src="/wife.png" alt="Wife" className="w-full h-full object-cover rounded-full" />
-                </motion.div>
-                {selected === "wife" && <BubbleRow entity="wife" anchor={anchors.wife} />}
+                    <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        className="bg-white rounded-full shadow-card cursor-pointer"
+                        style={{ width: avatarSize, height: avatarSize }}
+                    >
+                        <img src="/wife.png" alt="Wife" className="w-full h-full object-cover rounded-full" />
+                    </motion.div>
+                    {selected === "wife" && <BubbleRow entity="wife" />}
+                </div>
 
                 {/* Children (container static; image scales only if you want) */}
                 <div
-                    onClick={(e) => { e.stopPropagation(); setSelected(selected === "children" ? null : "children"); }}
-                    className="absolute bg-white rounded-full shadow-card cursor-pointer"
-                    style={{ bottom: anchors.children.bottom, left: "50%", transform: "translateX(-50%)", width: avatarSize - 6, height: avatarSize - 6, zIndex: 20 }}
+                    onMouseEnter={() => setSelected("children")}
+                    onMouseLeave={() => setSelected(null)}
+                    className="absolute"
+                    style={{ bottom: anchors.children.bottom, left: "50%", transform: "translateX(-50%)", zIndex: 20 }}
                 >
-                    <img src="/children.png" alt="Children" className="w-full h-full object-cover rounded-full" />
+                    <div
+                        className="bg-white rounded-full shadow-card cursor-pointer"
+                        style={{ width: avatarSize - 6, height: avatarSize - 6 }}
+                    >
+                        <img src="/children.png" alt="Children" className="w-full h-full object-cover rounded-full" />
+                    </div>
+                    {selected === "children" && <BubbleRow entity="children" size={avatarSize - 6} />}
                 </div>
-                {selected === "children" && <BubbleRow entity="children" anchor={anchors.children} />}
             </motion.div>
 
             {/* House bubbles (appear over the house) */}
             {selected === "house" && (
-                <div className="absolute -top-12">
+                <div
+                    className="absolute -top-12"
+                    onMouseEnter={() => setSelected("house")}
+                >
                     <AnimatePresence>
                         {BUBBLES.house.map((b, i) => (
                             <motion.button
