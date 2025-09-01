@@ -12,6 +12,7 @@ export default function Navbar() {
                     <NavLink to="/" className="text-slate-700 hover:text-slate-900">Home</NavLink>
                     <a href="#plans" className="text-slate-700 hover:text-slate-900">Plans</a>
                     <a href="#why" className="text-slate-700 hover:text-slate-900">Why Us</a>
+                    <NavLink to="/chat" className="text-slate-700 hover:text-slate-900">Chat</NavLink>
                     <a href="#contact" className="inline-flex items-center rounded-full bg-brand-500 px-4 py-2 text-white hover:bg-brand-600 transition">
                         Get Quote
                     </a>
